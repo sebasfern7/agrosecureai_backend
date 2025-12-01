@@ -1,0 +1,70 @@
+type Query {
+    me: User
+    farms: [Farm]
+    crops: [Crop]
+    farmMetrics(farmId: ID): [SensorData]
+}
+
+type Mutation {
+    login(email: String!, password: String!): AuthPayload
+    createFarm(input: CreateFarmInput!): Farm
+    addSensorData(input: SensorDataInput!): SensorData
+    createCrop(input: CreateCropInput!): Crop
+}
+
+type AuthPayload {
+    accessToken: String
+    user: User
+}
+
+type User {
+    id: ID
+    email: String
+    firstName: String
+    lastName: String
+    tenantId: String
+    enabled: Boolean
+    roles: [Role]
+}
+
+type Role {
+    id: ID
+    name: String
+}
+
+type Farm {
+    id: ID
+    name: String
+    location: String
+    ownerId: ID
+}
+
+type Crop {
+    id: ID
+    type: String
+    farm: Farm
+}
+
+type SensorData {
+    id: ID
+    metric: String
+    value: Float
+    timestamp: String
+}
+
+input CreateFarmInput {
+    name: String!
+    location: String!
+}
+
+input SensorDataInput {
+    batchId: ID!
+    metric: String!
+    value: Float!
+}
+
+input CreateCropInput {
+    farmId: ID!
+    type: String!
+}
+
