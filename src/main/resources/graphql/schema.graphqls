@@ -10,6 +10,8 @@ type Mutation {
     createFarm(input: CreateFarmInput!): Farm
     addSensorData(input: SensorDataInput!): SensorData
     createCrop(input: CreateCropInput!): Crop
+    updateFarm(input: UpdateFarmInput!): Farm
+    deleteFarm(id: ID!): Boolean
 }
 
 type AuthPayload {
@@ -36,7 +38,7 @@ type Farm {
     id: ID
     name: String
     location: String
-    ownerId: ID
+    owner: User
 }
 
 type Crop {
@@ -66,5 +68,11 @@ input SensorDataInput {
 input CreateCropInput {
     farmId: ID!
     type: String!
+}
+
+input UpdateFarmInput {
+    id: ID!
+    name: String
+    location: String
 }
 

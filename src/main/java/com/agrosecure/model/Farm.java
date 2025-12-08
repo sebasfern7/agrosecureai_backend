@@ -21,7 +21,10 @@ public class Farm {
 
     private String name;
     private String location;
-    private UUID ownerId; // Linking to User ID logically or could be ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     @CreatedDate
     private LocalDateTime createdAt;

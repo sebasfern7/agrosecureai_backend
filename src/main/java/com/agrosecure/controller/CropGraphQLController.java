@@ -12,6 +12,9 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import com.agrosecure.security.services.UserDetailsImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.List;
 
 @Controller
@@ -26,7 +29,15 @@ public class CropGraphQLController {
     @QueryMapping
     @PreAuthorize("isAuthenticated()")
     public List<Crop> crops() {
-        return cropRepository.findAll();
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRADOR"));
+
+        if (isAdmin) {
+            return cropRepository.findAll();
+        }
+        return cropRepository.findByFarmOwnerId(userDetails.getId());
     }
 
     @MutationMapping

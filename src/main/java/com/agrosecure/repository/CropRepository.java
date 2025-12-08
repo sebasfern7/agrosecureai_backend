@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface CropRepository extends JpaRepository<Crop, UUID> {
     List<Crop> findByFarmId(UUID farmId);
+
+    List<Crop> findByFarmOwnerId(UUID ownerId);
 }
