@@ -61,6 +61,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
         debugLog("H2", "FILTER_REQUEST", "uri=" + uri + ",method=" + request.getMethod() + ",servletPath=" + request.getServletPath());
         // #endregion
+        
+        // Skip JWT validation for authentication endpoints
+        if (uri.startsWith("/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         try {
             String jwt = parseJwt(request);
             // #region agent log

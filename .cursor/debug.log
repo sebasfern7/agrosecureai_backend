@@ -1,0 +1,7 @@
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"FILTER_REQUEST","data":"uri=/graphql,method=POST,servletPath=/graphql","timestamp":1765761505313}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"JWT_CHECK","data":"uri=/graphql,hasToken=false,isValid=false","timestamp":1765761505318}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"NO_AUTH","data":"uri=/graphql,noTokenOrInvalid","timestamp":1765761505318}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"FILTER_REQUEST","data":"uri=/graphiql,method=POST,servletPath=/graphiql","timestamp":1765761513178}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"JWT_CHECK","data":"uri=/graphiql,hasToken=false,isValid=false","timestamp":1765761513179}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"NO_AUTH","data":"uri=/graphiql,noTokenOrInvalid","timestamp":1765761513179}
+{"hypothesisId":"H2","location":"AuthTokenFilter","message":"FILTER_COMPLETE","data":"uri=/graphiql,status=405","timestamp":1765761513183}
