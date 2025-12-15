@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.FileWriter;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,9 +24,23 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     // #region agent log
     private static final String DEBUG_LOG_PATH = "/Users/sebastianfernandezconde/IntelijProjects/AgroSecureAI/.cursor/debug.log";
     private void debugLog(String hypothesisId, String message, String data) {
-        try (FileWriter fw = new FileWriter(DEBUG_LOG_PATH, true)) {
-            fw.write("{\"hypothesisId\":\"" + hypothesisId + "\",\"location\":\"AuthEntryPointJwt\",\"message\":\"" + message + "\",\"data\":\"" + data.replace("\"", "'") + "\",\"timestamp\":" + System.currentTimeMillis() + "}\n");
-        } catch (Exception e) {}
+        String logEntry = "{\"hypothesisId\":\"" + hypothesisId + "\",\"location\":\"AuthEntryPointJwt\",\"message\":\"" + message + "\",\"data\":\"" + data.replace("\"", "'") + "\",\"timestamp\":" + System.currentTimeMillis() + "}";
+        // Always log to standard logger (works in all environments)
+        logger.info("DEBUG: {}", logEntry);
+        
+        // Only attempt file write if directory exists (development environment)
+        try {
+            File logFile = new File(DEBUG_LOG_PATH);
+            File parentDir = logFile.getParentFile();
+            if (parentDir != null && parentDir.exists()) {
+                try (FileWriter fw = new FileWriter(DEBUG_LOG_PATH, true)) {
+                    fw.write(logEntry + "\n");
+                    fw.flush();
+                }
+            }
+        } catch (Exception e) {
+            // Silently fail in production - directory doesn't exist
+        }
     }
     // #endregion
 

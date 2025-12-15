@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.FileWriter;
+import java.io.File;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
@@ -33,13 +34,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     // #region agent log
     private static final String DEBUG_LOG_PATH = "/Users/sebastianfernandezconde/IntelijProjects/AgroSecureAI/.cursor/debug.log";
     private void debugLog(String hypothesisId, String message, String data) {
-        try (FileWriter fw = new FileWriter(DEBUG_LOG_PATH, true)) {
-            String logEntry = "{\"hypothesisId\":\"" + hypothesisId + "\",\"location\":\"AuthTokenFilter\",\"message\":\"" + message + "\",\"data\":\"" + data.replace("\"", "'") + "\",\"timestamp\":" + System.currentTimeMillis() + "}\n";
-            fw.write(logEntry);
-            fw.flush();
-            logger.info("DEBUG: {}", logEntry.trim());
+        String logEntry = "{\"hypothesisId\":\"" + hypothesisId + "\",\"location\":\"AuthTokenFilter\",\"message\":\"" + message + "\",\"data\":\"" + data.replace("\"", "'") + "\",\"timestamp\":" + System.currentTimeMillis() + "}";
+        // Always log to standard logger (works in all environments)
+        logger.info("DEBUG: {}", logEntry);
+        
+        // Only attempt file write if directory exists (development environment)
+        try {
+            File logFile = new File(DEBUG_LOG_PATH);
+            File parentDir = logFile.getParentFile();
+            if (parentDir != null && parentDir.exists()) {
+                try (FileWriter fw = new FileWriter(DEBUG_LOG_PATH, true)) {
+                    fw.write(logEntry + "\n");
+                    fw.flush();
+                }
+            }
         } catch (Exception e) {
-            logger.error("Failed to write debug log: {}", e.getMessage());
+            // Silently fail in production - directory doesn't exist
         }
     }
     // #endregion

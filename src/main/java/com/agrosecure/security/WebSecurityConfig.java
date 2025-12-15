@@ -77,7 +77,7 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**", "/graphiql", "/graphiql/**", "/graphql", "/graphql/**", 
+                        auth.requestMatchers("/", "/auth/**", "/graphiql", "/graphiql/**", "/graphql", "/graphql/**", 
                                              "/vendor/**", "/webjars/**", "/favicon.ico", "/static/**", 
                                              "/css/**", "/js/**").permitAll()
                                 .anyRequest().authenticated()
